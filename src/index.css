@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Custom Theme colors */
+  --color-primary: #0B1C38;
+  --color-accent: #E8AF30;
+}
+
+@theme {
+  --color-primary: #0B1C38;
+  --color-accent: #E8AF30;
+  --font-sans: 'Inter', sans-serif;
+
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
