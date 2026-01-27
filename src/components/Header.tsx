@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-2' : 'bg-white/90 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none shadow-sm lg:shadow-none py-3 lg:py-4'
                 }`}
         >
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
                         {/* Using a placeholder for the logo text/image based on the upload */}
                         <div className="flex flex-col">
                             <Link to="/">
-                                <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-12 lg:h-20 w-auto object-contain" />
+                                <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-10 lg:h-20 w-auto object-contain max-w-[150px] lg:max-w-none" />
                             </Link>
                         </div>
                     </div>
