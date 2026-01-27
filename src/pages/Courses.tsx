@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Users, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 interface Course {
   id: number;
@@ -152,6 +153,10 @@ const Courses: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
+      <SEO
+        title="Courses"
+        description="Explore our range of professional qualifications and training courses in care, education, and management at JS Training & Development Ltd."
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#f8fbff] pb-20 pt-12 lg:pt-12">
         {/* Soft Wavy Background Component */}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jstraininganddevelopment.co.uk/sitemap.xml

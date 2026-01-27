@@ -1,10 +1,15 @@
 import React from 'react';
 import { Quote, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const Testimonials: React.FC = () => {
   return (
     <div className="bg-white min-h-screen">
+      <SEO
+        title="Testimonials"
+        description="Read what our clients and learners have to say about our training and development services at JS Training & Development Ltd."
+      />
       {/* Hero Section */}
       <section className="pt-24 pb-12 lg:pt-28 lg:pb-16">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">

@@ -1,34 +1,59 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { sanitizeObject } from '../utils/sanitize';
+
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+  consent: z.boolean().refine(val => val === true, 'You must consent to be contacted'),
+  privacy: z.boolean().refine(val => val === true, 'You must agree to the privacy notice'),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-    consent: false,
-    privacy: false
-  });
-
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      message: '',
+      consent: false,
+      privacy: false
+    }
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
     setStatus('loading');
 
     try {
+      // Sanitize data before sending
+      const sanitizedData = sanitizeObject(data);
+
       const response = await fetch("https://formsubmit.co/ajax/info@jstraininganddevelopment.co.uk", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(sanitizedData)
       });
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', message: '', consent: false, privacy: false });
+        reset();
       } else {
         setStatus('error');
       }
@@ -40,6 +65,10 @@ const Contact: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-white pt-24 pb-16 overflow-hidden">
+      <SEO
+        title="Contact Us"
+        description="Get in touch with JS Training & Development Ltd for enquiries about our professional training and development services."
+      />
       {/* Background Decorative Squares - Left (Blue) */}
       <div className="absolute left-0 bottom-20 z-0 pointer-events-none opacity-20 lg:opacity-100">
         <div className="relative">
@@ -100,7 +129,7 @@ const Contact: React.FC = () => {
                 </button>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* FormSubmit Configuration */}
                 <input type="hidden" name="_subject" value="New Website Enquiry" />
                 <input type="hidden" name="_template" value="table" />
@@ -110,82 +139,78 @@ const Contact: React.FC = () => {
                   <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-gray-400 font-medium">Name</label>
                   <input
                     type="text"
-                    name="name"
                     placeholder="Full name"
-                    className="w-full px-6 py-4 rounded-xl border border-gray-200 focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
+                    className={`w-full px-6 py-4 rounded-xl border ${errors.name ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
+                    {...register('name')}
                   />
+                  {errors.name && <p className="text-red-500 text-xs mt-1 ml-4">{errors.name.message}</p>}
                 </div>
 
                 {/* Email field */}
                 <div className="relative">
                   <input
                     type="email"
-                    name="email"
                     placeholder="Email Address"
-                    className="w-full px-6 py-4 rounded-xl border border-gray-200 focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
+                    className={`w-full px-6 py-4 rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
+                    {...register('email')}
                   />
+                  {errors.email && <p className="text-red-500 text-xs mt-1 ml-4">{errors.email.message}</p>}
                 </div>
 
                 {/* Message field */}
                 <div className="relative">
                   <textarea
-                    name="message"
                     placeholder="Your Message"
                     rows={6}
-                    className="w-full px-6 py-4 rounded-xl border border-gray-200 focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300 resize-none"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    required
+                    className={`w-full px-6 py-4 rounded-xl border ${errors.message ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300 resize-none`}
+                    {...register('message')}
                   />
+                  {errors.message && <p className="text-red-500 text-xs mt-1 ml-4">{errors.message.message}</p>}
                 </div>
 
                 {/* Checkboxes */}
                 <div className="space-y-4 pt-2">
-                  <label className="flex items-start gap-4 cursor-pointer group">
-                    <div className="relative flex items-center mt-1">
-                      <input
-                        type="checkbox"
-                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-[#193388] checked:border-[#193388] transition-all"
-                        checked={formData.consent}
-                        onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
-                        required
-                      />
-                      <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                        </svg>
+                  <div>
+                    <label className="flex items-start gap-4 cursor-pointer group">
+                      <div className="relative flex items-center mt-1">
+                        <input
+                          type="checkbox"
+                          className={`peer h-5 w-5 cursor-pointer appearance-none rounded border ${errors.consent ? 'border-red-500' : 'border-gray-300'} checked:bg-[#193388] checked:border-[#193388] transition-all`}
+                          {...register('consent')}
+                        />
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
+                        I consent to JS Training & Development Ltd contacting me regarding my enquiry.
                       </span>
-                    </div>
-                    <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
-                      I consent to JS Training & Development Ltd contacting me regarding my enquiry.
-                    </span>
-                  </label>
+                    </label>
+                    {errors.consent && <p className="text-red-500 text-xs mt-1 ml-9">{errors.consent.message}</p>}
+                  </div>
 
-                  <label className="flex items-start gap-4 cursor-pointer group">
-                    <div className="relative flex items-center mt-1">
-                      <input
-                        type="checkbox"
-                        className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-gray-300 checked:bg-[#193388] checked:border-[#193388] transition-all"
-                        checked={formData.privacy}
-                        onChange={(e) => setFormData({ ...formData, privacy: e.target.checked })}
-                        required
-                      />
-                      <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                        </svg>
+                  <div>
+                    <label className="flex items-start gap-4 cursor-pointer group">
+                      <div className="relative flex items-center mt-1">
+                        <input
+                          type="checkbox"
+                          className={`peer h-5 w-5 cursor-pointer appearance-none rounded border ${errors.privacy ? 'border-red-500' : 'border-gray-300'} checked:bg-[#193388] checked:border-[#193388] transition-all`}
+                          {...register('privacy')}
+                        />
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
+                        I have read and understood the Privacy Notice. (linked to the Privacy Policy)
                       </span>
-                    </div>
-                    <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
-                      I have read and understood the Privacy Notice. (linked to the Privacy Policy)
-                    </span>
-                  </label>
+                    </label>
+                    {errors.privacy && <p className="text-red-500 text-xs mt-1 ml-9">{errors.privacy.message}</p>}
+                  </div>
                 </div>
 
                 {status === 'error' && (

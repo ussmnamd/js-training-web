@@ -1,10 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const Blogs: React.FC = () => {
 
   return (
     <div className="bg-white min-h-screen">
+      <SEO
+        title="Insights & Updates"
+        description="Stay informed with insights, guidance, and updates from across the education and care sectors by JS Training & Development Ltd."
+      />
       {/* High-Fidelity Hero Section */}
       <section className="pt-20 pb-8 lg:pt-24 lg:pb-12">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">

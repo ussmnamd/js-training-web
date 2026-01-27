@@ -1,12 +1,15 @@
 import { ClipboardCheck, CheckCircle } from 'lucide-react';
 import React from 'react';
 import { motion } from 'framer-motion';
-
-
+import SEO from '../components/SEO';
 
 const Services: React.FC = () => {
   return (
     <div className="bg-white min-h-screen">
+      <SEO
+        title="Services"
+        description="Discover our range of training, assessment, and consultancy services including adult care, early years, and quality assurance."
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#f8fbff] py-12 lg:py-20">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">

@@ -1,8 +1,13 @@
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 const AboutUs: React.FC = () => {
   return (
     <div className="bg-white min-h-screen">
+      <SEO
+        title="About Us"
+        description="Learn about JS Training & Development Ltd, our purpose, and our commitment to quality delivered with confidence in professional training."
+      />
       {/* Hero Section */}
       <section className="py-12 lg:py-20 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
