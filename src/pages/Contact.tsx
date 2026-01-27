@@ -64,7 +64,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-white pt-24 pb-16 overflow-hidden">
+    <div className="relative min-h-screen bg-white pt-32 lg:pt-28 pb-16 overflow-hidden">
       <SEO
         title="Contact Us"
         description="Get in touch with JS Training & Development Ltd for enquiries about our professional training and development services."

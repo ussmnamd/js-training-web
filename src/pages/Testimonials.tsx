@@ -11,7 +11,7 @@ const Testimonials: React.FC = () => {
         description="Read what our clients and learners have to say about our training and development services at JS Training & Development Ltd."
       />
       {/* Hero Section */}
-      <section className="pt-24 pb-12 lg:pt-28 lg:pb-16">
+      <section className="pt-32 lg:pt-28 pb-12 overflow-hidden bg-white">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}

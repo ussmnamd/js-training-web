@@ -9,7 +9,7 @@ const AboutUs: React.FC = () => {
         description="Learn about JS Training & Development Ltd, our purpose, and our commitment to quality delivered with confidence in professional training."
       />
       {/* Hero Section */}
-      <section className="py-12 lg:py-20 overflow-hidden">
+      <section className="pt-32 lg:pt-28 pb-12 lg:pb-20 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left Content */}

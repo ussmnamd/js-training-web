@@ -11,7 +11,7 @@ const Services: React.FC = () => {
         description="Discover our range of training, assessment, and consultancy services including adult care, early years, and quality assurance."
       />
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#f8fbff] py-12 lg:py-20">
+      <section className="relative overflow-hidden bg-[#f8fbff] pt-32 lg:pt-28 pb-12 lg:pb-20">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}

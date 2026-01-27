@@ -11,7 +11,7 @@ const Blogs: React.FC = () => {
         description="Stay informed with insights, guidance, and updates from across the education and care sectors by JS Training & Development Ltd."
       />
       {/* High-Fidelity Hero Section */}
-      <section className="pt-20 pb-8 lg:pt-24 lg:pb-12">
+      <section className="pt-32 lg:pt-28 pb-12 overflow-hidden bg-white">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}

@@ -158,7 +158,7 @@ const Courses: React.FC = () => {
         description="Explore our range of professional qualifications and training courses in care, education, and management at JS Training & Development Ltd."
       />
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#f8fbff] pb-20 pt-12 lg:pt-12">
+      <section className="relative overflow-hidden bg-[#f8fbff] pt-32 lg:pt-28 pb-20">
         {/* Soft Wavy Background Component */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[150px] fill-white">
