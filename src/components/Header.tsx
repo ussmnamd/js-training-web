@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
                         {/* Using a placeholder for the logo text/image based on the upload */}
                         <div className="flex flex-col">
                             <Link to="/">
-                                <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-20 w-auto object-contain" />
+                                <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-12 lg:h-20 w-auto object-contain" />
                             </Link>
                         </div>
                     </div>

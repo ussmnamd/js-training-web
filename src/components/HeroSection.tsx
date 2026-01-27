@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export const HeroSection: React.FC = () => {
     return (
-        <section className="relative w-full min-h-[80vh] pt-24 pb-12 overflow-hidden bg-white">
+        <section className="relative w-full min-h-[80vh] pt-32 lg:pt-28 pb-12 overflow-hidden bg-white">
             {/* Background Decorative Elements - Concentric Circles */}
             <div className="absolute top-[8%] left-[-5%] opacity-60 pointer-events-none z-0">
                 <ConcentricCircles size={450} circles={5} />
