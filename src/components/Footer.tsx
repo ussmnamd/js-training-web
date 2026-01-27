@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
                             <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-16 w-auto object-contain" />
                         </Link>
                         <p className="text-gray-400 text-[15px] leading-relaxed max-w-xs">
-                            JS Training & Development Ltd – Quality delivered or delivers with confidence.
+                            JS Training & Development Ltd – Quality delivered with confidence.
                         </p>
                     </div>
 
