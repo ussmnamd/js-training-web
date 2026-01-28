@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
 import { useForm } from 'react-hook-form';
@@ -12,7 +13,7 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters'),
   consent: z.boolean().refine(val => val === true, 'You must consent to be contacted'),
   privacy: z.boolean().refine(val => val === true, 'You must agree to the privacy notice'),
-  captcha: z.string().min(1, 'Please solve the math problem'),
+  recaptchaToken: z.string().min(1, 'Please complete the reCAPTCHA'),
   hp_field: z.string().optional(), // Honeypot field
 });
 
@@ -20,25 +21,14 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [captchaNum, setCaptchaNum] = useState({ a: 0, b: 0 });
-
-  // Generate new math problem
-  const generateCaptcha = () => {
-    setCaptchaNum({
-      a: Math.floor(Math.random() * 10) + 1,
-      b: Math.floor(Math.random() * 10) + 1
-    });
-  };
-
-  React.useEffect(() => {
-    generateCaptcha();
-  }, []);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors }
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -48,10 +38,14 @@ const Contact: React.FC = () => {
       message: '',
       consent: false,
       privacy: false,
-      captcha: '',
+      recaptchaToken: '',
       hp_field: ''
     }
   });
+
+  const onCaptchaChange = (token: string | null) => {
+    setValue('recaptchaToken', token || '');
+  };
 
   const onSubmit = async (data: ContactFormData) => {
     // 1. Honeypot check: If bot filled this, silently fail
@@ -62,19 +56,13 @@ const Contact: React.FC = () => {
       return;
     }
 
-    // 2. Captcha check
-    if (parseInt(data.captcha) !== captchaNum.a + captchaNum.b) {
-      setError('captcha', { message: 'Incorrect answer. Please try again.' });
-      return;
-    }
-
     setStatus('loading');
 
     try {
       // Sanitize data before sending
       const sanitizedData = sanitizeObject(data);
-      // Remove captcha and honeypot before sending to server
-      const { captcha, hp_field, ...finalData } = sanitizedData;
+      // Remove recaptchaToken and honeypot before sending to server
+      const { recaptchaToken, hp_field, ...finalData } = sanitizedData;
 
       const response = await fetch("https://formsubmit.co/ajax/info@jstraininganddevelopment.co.uk", {
         method: "POST",
@@ -88,7 +76,7 @@ const Contact: React.FC = () => {
       if (response.ok) {
         setStatus('success');
         reset();
-        generateCaptcha();
+        recaptchaRef.current?.reset();
       } else {
         setStatus('error');
       }
@@ -212,24 +200,19 @@ const Contact: React.FC = () => {
                   {errors.message && <p className="text-red-500 text-xs mt-1 ml-4">{errors.message.message}</p>}
                 </div>
 
-                {/* Math Captcha */}
-                <div className="bg-[#f0f4ff] p-6 rounded-2xl border border-[#193388]/10">
-                  <p className="text-[#193388] font-bold text-sm mb-4">Security Check: Are you human?</p>
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="bg-white px-6 py-3 rounded-xl border border-gray-100 font-bold text-lg text-gray-700 shadow-sm min-w-[120px] text-center">
-                      {captchaNum.a} + {captchaNum.b} =
-                    </div>
-                    <div className="flex-1 w-full">
-                      <input
-                        type="number"
-                        placeholder="Result"
-                        className={`w-full px-6 py-3 rounded-xl border ${errors.captcha ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
-                        {...register('captcha')}
-                      />
-                    </div>
+                {/* Google reCAPTCHA */}
+                <div className="flex justify-start">
+                  <div className="rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Currently using Google's test key
+                      onChange={onCaptchaChange}
+                    />
                   </div>
-                  {errors.captcha && <p className="text-red-500 text-xs mt-2">{errors.captcha.message}</p>}
                 </div>
+                {errors.recaptchaToken && (
+                  <p className="text-red-500 text-xs mt-2 ml-1">{errors.recaptchaToken.message}</p>
+                )}
 
                 {/* Checkboxes */}
                 <div className="space-y-4 pt-2">
