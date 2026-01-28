@@ -12,17 +12,33 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters'),
   consent: z.boolean().refine(val => val === true, 'You must consent to be contacted'),
   privacy: z.boolean().refine(val => val === true, 'You must agree to the privacy notice'),
+  captcha: z.string().min(1, 'Please solve the math problem'),
+  hp_field: z.string().optional(), // Honeypot field
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [captchaNum, setCaptchaNum] = useState({ a: 0, b: 0 });
+
+  // Generate new math problem
+  const generateCaptcha = () => {
+    setCaptchaNum({
+      a: Math.floor(Math.random() * 10) + 1,
+      b: Math.floor(Math.random() * 10) + 1
+    });
+  };
+
+  React.useEffect(() => {
+    generateCaptcha();
+  }, []);
 
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors }
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -31,16 +47,34 @@ const Contact: React.FC = () => {
       email: '',
       message: '',
       consent: false,
-      privacy: false
+      privacy: false,
+      captcha: '',
+      hp_field: ''
     }
   });
 
   const onSubmit = async (data: ContactFormData) => {
+    // 1. Honeypot check: If bot filled this, silently fail
+    if (data.hp_field) {
+      console.warn('Bot detected via honeypot');
+      setStatus('success');
+      reset();
+      return;
+    }
+
+    // 2. Captcha check
+    if (parseInt(data.captcha) !== captchaNum.a + captchaNum.b) {
+      setError('captcha', { message: 'Incorrect answer. Please try again.' });
+      return;
+    }
+
     setStatus('loading');
 
     try {
       // Sanitize data before sending
       const sanitizedData = sanitizeObject(data);
+      // Remove captcha and honeypot before sending to server
+      const { captcha, hp_field, ...finalData } = sanitizedData;
 
       const response = await fetch("https://formsubmit.co/ajax/info@jstraininganddevelopment.co.uk", {
         method: "POST",
@@ -48,12 +82,13 @@ const Contact: React.FC = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(sanitizedData)
+        body: JSON.stringify(finalData)
       });
 
       if (response.ok) {
         setStatus('success');
         reset();
+        generateCaptcha();
       } else {
         setStatus('error');
       }
@@ -134,6 +169,15 @@ const Contact: React.FC = () => {
                 <input type="hidden" name="_subject" value="New Website Enquiry" />
                 <input type="hidden" name="_template" value="table" />
 
+                {/* Honeypot field - hidden from users */}
+                <input
+                  type="text"
+                  {...register('hp_field')}
+                  tabIndex={-1}
+                  className="hidden"
+                  autoComplete="off"
+                />
+
                 {/* Name field */}
                 <div className="relative">
                   <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-gray-400 font-medium">Name</label>
@@ -166,6 +210,25 @@ const Contact: React.FC = () => {
                     {...register('message')}
                   />
                   {errors.message && <p className="text-red-500 text-xs mt-1 ml-4">{errors.message.message}</p>}
+                </div>
+
+                {/* Math Captcha */}
+                <div className="bg-[#f0f4ff] p-6 rounded-2xl border border-[#193388]/10">
+                  <p className="text-[#193388] font-bold text-sm mb-4">Security Check: Are you human?</p>
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <div className="bg-white px-6 py-3 rounded-xl border border-gray-100 font-bold text-lg text-gray-700 shadow-sm min-w-[120px] text-center">
+                      {captchaNum.a} + {captchaNum.b} =
+                    </div>
+                    <div className="flex-1 w-full">
+                      <input
+                        type="number"
+                        placeholder="Result"
+                        className={`w-full px-6 py-3 rounded-xl border ${errors.captcha ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
+                        {...register('captcha')}
+                      />
+                    </div>
+                  </div>
+                  {errors.captcha && <p className="text-red-500 text-xs mt-2">{errors.captcha.message}</p>}
                 </div>
 
                 {/* Checkboxes */}
