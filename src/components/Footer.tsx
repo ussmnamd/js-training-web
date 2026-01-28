@@ -38,6 +38,13 @@ export const Footer: React.FC = () => {
                                 <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-[15px]">Contact</Link></li>
                             </ul>
                         </div>
+                        <div className="space-y-4">
+                            <ul className="space-y-3">
+                                <li className="text-gray-400 text-[13px] leading-relaxed">UKPRN: 10100203</li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed">ICO Registered Data Controller (ZC065333)</li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed">Professional Indemnity & Public Liability Insurance (Hiscox)</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -45,7 +52,7 @@ export const Footer: React.FC = () => {
                 <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-gray-500 text-sm">
                     <p>© {currentYear} – All rights reserved.</p>
                     <div className="flex items-center space-x-6">
-                        <a href="https://instagram.com/jstraininganddeveloment" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Instagram">
+                        <a href="https://instagram.com/jstraininganddevelopment" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Instagram">
                             <Instagram size={20} />
                         </a>
                         <a href="https://x.com/JsTraining59004" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="X (formerly Twitter)">
