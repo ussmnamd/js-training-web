@@ -11,8 +11,8 @@ export const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
                     {/* Left Section: Logo & Tagline */}
                     <div className="md:col-span-4 space-y-8">
-                        <Link to="/" className="inline-block bg-white p-2 rounded-sm mt-1">
-                            <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-16 w-auto object-contain" />
+                        <Link to="/" className="inline-block mt-1">
+                            <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-16 w-auto object-contain mix-blend-screen grayscale invert" />
                         </Link>
                         <p className="text-gray-400 text-[15px] leading-relaxed max-w-xs">
                             JS Training & Development Ltd – Quality delivered with confidence.
