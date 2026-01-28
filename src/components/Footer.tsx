@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Twitter, Linkedin, Facebook, Github, Globe } from 'lucide-react';
+import { Linkedin, Instagram } from 'lucide-react';
 
 export const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
@@ -45,11 +45,17 @@ export const Footer: React.FC = () => {
                 <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-gray-500 text-sm">
                     <p>© {currentYear} – All rights reserved.</p>
                     <div className="flex items-center space-x-6">
-                        <a href="#" className="hover:text-white transition-colors"><Twitter size={20} /></a>
-                        <a href="#" className="hover:text-white transition-colors"><Linkedin size={20} /></a>
-                        <a href="#" className="hover:text-white transition-colors"><Facebook size={20} /></a>
-                        <a href="#" className="hover:text-white transition-colors"><Github size={20} /></a>
-                        <a href="#" className="hover:text-white transition-colors"><Globe size={20} /></a>
+                        <a href="https://instagram.com/jstraininganddeveloment" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="Instagram">
+                            <Instagram size={20} />
+                        </a>
+                        <a href="https://x.com/JsTraining59004" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="X (formerly Twitter)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/js-traininganddevelopment" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" aria-label="LinkedIn">
+                            <Linkedin size={20} />
+                        </a>
                     </div>
                 </div>
             </div>
