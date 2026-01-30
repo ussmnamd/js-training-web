@@ -211,7 +211,7 @@ const Contact: React.FC = () => {
                   <div className="rounded-xl overflow-hidden border border-gray-100 shadow-sm">
                     <ReCAPTCHA
                       ref={recaptchaRef}
-                      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Currently using Google's test key
+                      sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LcNH1ssAAAAAIbB0pw_y7jw_zjjil61O1vkPt2c"}
                       onChange={onCaptchaChange}
                     />
                   </div>
