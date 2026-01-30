@@ -11,6 +11,9 @@ const Services = lazy(() => import('../pages/Services'));
 const Testimonials = lazy(() => import('../pages/Testimonials'));
 const Blogs = lazy(() => import('../pages/Blogs'));
 const Contact = lazy(() => import('../pages/Contact'));
+const Terms = lazy(() => import('../pages/Terms'));
+const Privacy = lazy(() => import('../pages/Privacy'));
+const Cookies = lazy(() => import('../pages/Cookies'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 
 const withSuspense = (Component: React.ComponentType) => (
@@ -52,6 +55,18 @@ export const router = createBrowserRouter([
       {
         path: 'contact',
         element: withSuspense(Contact),
+      },
+      {
+        path: 'terms',
+        element: withSuspense(Terms),
+      },
+      {
+        path: 'privacy',
+        element: withSuspense(Privacy),
+      },
+      {
+        path: 'cookies',
+        element: withSuspense(Cookies),
       },
       {
         path: '404',

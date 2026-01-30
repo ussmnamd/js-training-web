@@ -10,17 +10,18 @@ export const Footer: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
                     {/* Left Section: Logo & Tagline */}
-                    <div className="md:col-span-4 space-y-8">
-                        <Link to="/" className="inline-block mt-1">
-                            <img src="/images/branding/logo.jpg" alt="JS Training & Development" className="h-16 w-auto object-contain mix-blend-screen grayscale invert" />
+                    <div className="md:col-span-5">
+                        <Link to="/" className="inline-block">
+                            <img
+                                src="/images/branding/footer-logo.jpeg"
+                                alt="JS Training & Development"
+                                className="h-80 w-80 object-contain mix-blend-screen grayscale invert brightness-110 contrast-110"
+                            />
                         </Link>
-                        <p className="text-gray-400 text-[15px] leading-relaxed max-w-xs">
-                            JS Training & Development Ltd – Quality delivered with confidence.
-                        </p>
                     </div>
 
                     {/* Links Section - Middle & Right */}
-                    <div className="md:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
                         <div className="space-y-4">
                             <ul className="space-y-3">
                                 <li><Link to="/" className="text-gray-300 hover:text-white transition-colors text-[15px]">Home</Link></li>
@@ -39,10 +40,24 @@ export const Footer: React.FC = () => {
                             </ul>
                         </div>
                         <div className="space-y-4">
+                            <h3 className="text-white font-semibold text-[15px]">Accreditations & Compliance</h3>
                             <ul className="space-y-3">
-                                <li className="text-gray-400 text-[13px] leading-relaxed">UKPRN: 10100203</li>
-                                <li className="text-gray-400 text-[13px] leading-relaxed">ICO Registered Data Controller (ZC065333)</li>
-                                <li className="text-gray-400 text-[13px] leading-relaxed">Professional Indemnity & Public Liability Insurance (Hiscox)</li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed flex items-start gap-2">
+                                    <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-600 shrink-0" />
+                                    Approved Centre with iCQ (Industry Qualifications)
+                                </li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed flex items-start gap-2">
+                                    <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-600 shrink-0" />
+                                    UKPRN: 10100203
+                                </li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed flex items-start gap-2">
+                                    <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-600 shrink-0" />
+                                    ICO Registered Data Controller (ZC065333)
+                                </li>
+                                <li className="text-gray-400 text-[13px] leading-relaxed flex items-start gap-2">
+                                    <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-600 shrink-0" />
+                                    Professional Indemnity & Public Liability Insurance (Hiscox)
+                                </li>
                             </ul>
                         </div>
                     </div>

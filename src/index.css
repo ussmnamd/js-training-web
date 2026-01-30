@@ -27,3 +27,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Accessibility: Visible focus indicator for keyboard navigation (WCAG 2.4.7) */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Remove focus outline on mouse click, keep for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}

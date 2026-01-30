@@ -27,8 +27,8 @@ const Contact: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    setError,
     setValue,
+    watch,
     formState: { errors }
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -42,6 +42,10 @@ const Contact: React.FC = () => {
       hp_field: ''
     }
   });
+
+  // Watch checkbox values for controlled state
+  const consentValue = watch('consent');
+  const privacyValue = watch('privacy');
 
   const onCaptchaChange = (token: string | null) => {
     setValue('recaptchaToken', token || '');
@@ -167,37 +171,39 @@ const Contact: React.FC = () => {
                 />
 
                 {/* Name field */}
-                <div className="relative">
-                  <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-gray-400 font-medium">Name</label>
+                <div className="relative group">
+                  <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-[#193388] font-bold z-10">Name</label>
                   <input
                     type="text"
                     placeholder="Full name"
-                    className={`w-full px-6 py-4 rounded-xl border ${errors.name ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
+                    className={`w-full px-6 py-4 rounded-xl border-[3px] ${errors.name ? 'border-red-500' : 'border-gray-300 group-hover:border-gray-400'} bg-gray-50/30 focus:bg-white focus:border-[#193388] outline-none transition-all text-gray-800 placeholder:text-gray-400 shadow-sm`}
                     {...register('name')}
                   />
-                  {errors.name && <p className="text-red-500 text-xs mt-1 ml-4">{errors.name.message}</p>}
+                  {errors.name && <p className="text-red-500 text-xs mt-1 ml-4 font-medium">{errors.name.message}</p>}
                 </div>
 
                 {/* Email field */}
-                <div className="relative">
+                <div className="relative group">
+                  <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-[#193388] font-bold z-10">Email Address</label>
                   <input
                     type="email"
-                    placeholder="Email Address"
-                    className={`w-full px-6 py-4 rounded-xl border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300`}
+                    placeholder="email@example.com"
+                    className={`w-full px-6 py-4 rounded-xl border-[3px] ${errors.email ? 'border-red-500' : 'border-gray-300 group-hover:border-gray-400'} bg-gray-50/30 focus:bg-white focus:border-[#193388] outline-none transition-all text-gray-800 placeholder:text-gray-400 shadow-sm`}
                     {...register('email')}
                   />
-                  {errors.email && <p className="text-red-500 text-xs mt-1 ml-4">{errors.email.message}</p>}
+                  {errors.email && <p className="text-red-500 text-xs mt-1 ml-4 font-medium">{errors.email.message}</p>}
                 </div>
 
                 {/* Message field */}
-                <div className="relative">
+                <div className="relative group">
+                  <label className="absolute -top-3 left-4 bg-white px-2 text-xs text-[#193388] font-bold z-10">Your Message</label>
                   <textarea
-                    placeholder="Your Message"
+                    placeholder="How can we help?"
                     rows={6}
-                    className={`w-full px-6 py-4 rounded-xl border ${errors.message ? 'border-red-500' : 'border-gray-200'} focus:border-[#193388] outline-none transition-colors text-gray-800 placeholder:text-gray-300 resize-none`}
+                    className={`w-full px-6 py-4 rounded-xl border-[3px] ${errors.message ? 'border-red-500' : 'border-gray-300 group-hover:border-gray-400'} bg-gray-50/30 focus:bg-white focus:border-[#193388] outline-none transition-all text-gray-800 placeholder:text-gray-400 resize-none shadow-sm`}
                     {...register('message')}
                   />
-                  {errors.message && <p className="text-red-500 text-xs mt-1 ml-4">{errors.message.message}</p>}
+                  {errors.message && <p className="text-red-500 text-xs mt-1 ml-4 font-medium">{errors.message.message}</p>}
                 </div>
 
                 {/* Google reCAPTCHA */}
@@ -215,47 +221,49 @@ const Contact: React.FC = () => {
                 )}
 
                 {/* Checkboxes */}
-                <div className="space-y-4 pt-2">
+                <div className="space-y-6 pt-4">
                   <div>
                     <label className="flex items-start gap-4 cursor-pointer group">
-                      <div className="relative flex items-center mt-1">
+                      <div className="relative flex items-center mt-0.5">
                         <input
                           type="checkbox"
-                          className={`peer h-5 w-5 cursor-pointer appearance-none rounded border ${errors.consent ? 'border-red-500' : 'border-gray-300'} checked:bg-[#193388] checked:border-[#193388] transition-all`}
-                          {...register('consent')}
+                          checked={consentValue}
+                          onChange={(e) => setValue('consent', e.target.checked, { shouldValidate: true })}
+                          className={`peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-[3px] ${errors.consent ? 'border-red-500' : 'border-gray-400 group-hover:border-[#193388]'} checked:bg-[#193388] checked:border-[#193388] transition-all bg-white`}
                         />
-                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1.5">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                           </svg>
                         </span>
                       </div>
-                      <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
+                      <span className="text-[15px] text-gray-700 font-medium leading-relaxed pt-0.5 group-hover:text-gray-900 transition-colors">
                         I consent to JS Training & Development Ltd contacting me regarding my enquiry.
                       </span>
                     </label>
-                    {errors.consent && <p className="text-red-500 text-xs mt-1 ml-9">{errors.consent.message}</p>}
+                    {errors.consent && <p className="text-red-500 text-[13px] mt-1.5 ml-10 font-medium">{errors.consent.message}</p>}
                   </div>
 
                   <div>
                     <label className="flex items-start gap-4 cursor-pointer group">
-                      <div className="relative flex items-center mt-1">
+                      <div className="relative flex items-center mt-0.5">
                         <input
                           type="checkbox"
-                          className={`peer h-5 w-5 cursor-pointer appearance-none rounded border ${errors.privacy ? 'border-red-500' : 'border-gray-300'} checked:bg-[#193388] checked:border-[#193388] transition-all`}
-                          {...register('privacy')}
+                          checked={privacyValue}
+                          onChange={(e) => setValue('privacy', e.target.checked, { shouldValidate: true })}
+                          className={`peer h-6 w-6 cursor-pointer appearance-none rounded-lg border-[3px] ${errors.privacy ? 'border-red-500' : 'border-gray-400 group-hover:border-[#193388]'} checked:bg-[#193388] checked:border-[#193388] transition-all bg-white`}
                         />
-                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
+                        <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-opacity">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1.5">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
                           </svg>
                         </span>
                       </div>
-                      <span className="text-[14px] text-gray-500 leading-tight pt-0.5">
-                        I have read and understood the Privacy Notice. (linked to the Privacy Policy)
+                      <span className="text-[15px] text-gray-700 font-medium leading-relaxed pt-0.5 group-hover:text-gray-900 transition-colors">
+                        I have read and understood the Privacy Notice.
                       </span>
                     </label>
-                    {errors.privacy && <p className="text-red-500 text-xs mt-1 ml-9">{errors.privacy.message}</p>}
+                    {errors.privacy && <p className="text-red-500 text-[13px] mt-1.5 ml-10 font-medium">{errors.privacy.message}</p>}
                   </div>
                 </div>
 
@@ -282,9 +290,17 @@ const Contact: React.FC = () => {
               </form>
             )}
 
-            <p className="text-[13px] text-gray-400 mt-12 leading-relaxed text-center lg:text-left">
-              Your information will only be used to respond to your enquiry and will be kept secure. We aim to respond to enquiries as soon as possible, usually within 1-2 working days.
-            </p>
+            <div className="mt-12 space-y-6">
+              <div className="pt-6 border-t border-gray-100">
+                <h4 className="text-gray-900 font-bold text-sm mb-2">Privacy Notice</h4>
+                <p className="text-[13px] text-gray-500 leading-relaxed italic">
+                  We collect your name and email address solely to process and respond to your enquiry. Your data is handled securely, stored in accordance with our data protection policies, and will not be shared with third parties.
+                </p>
+              </div>
+              <p className="text-[15px] text-gray-600 font-medium text-center lg:text-left">
+                We aim to respond to enquiries as soon as possible, usually within 1–2 working days.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

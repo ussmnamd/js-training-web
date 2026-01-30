@@ -71,9 +71,10 @@ export const Header: React.FC = () => {
                     <div className="lg:hidden">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="text-gray-800 hover:text-primary focus:outline-none"
+                            className="text-gray-800 hover:text-primary focus:outline-none focus-visible:outline-accent"
                             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                             aria-expanded={isMobileMenuOpen}
+                            aria-controls="mobile-menu"
                         >
                             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -83,7 +84,12 @@ export const Header: React.FC = () => {
 
             {/* Mobile Menu Dropdown */}
             {isMobileMenuOpen && (
-                <div className="lg:hidden bg-white shadow-lg absolute top-full left-0 w-full py-4 px-4 flex flex-col space-y-4" role="navigation" aria-label="Mobile navigation">
+                <div
+                    id="mobile-menu"
+                    className="lg:hidden bg-white shadow-lg absolute top-full left-0 w-full py-4 px-4 flex flex-col space-y-4 border-t border-gray-100"
+                    role="navigation"
+                    aria-label="Mobile navigation"
+                >
                     {navLinks.map((link) => {
                         const isActive = location.pathname === link.path;
                         return (
